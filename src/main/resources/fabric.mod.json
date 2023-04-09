@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "sort",
+	"version": "${version}",
+	"name": "Sort",
+	"description": "a minimalistic container sorter",
+	"authors": [
+		"16_"
+	],
+	"contact": {
+		"sources": "https://github.com/16underscore/Sort"
+	},
+	"icon": "assets/sort/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"me.sixteen_.sort.Sort"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.14.17",
+		"fabric": "*",
+		"minecraft": "~1.19",
+		"java": ">=17"
+	},
+	"suggests": {
+		"sort_extension": "*"
+	},
+	"custom": {
+		"modmenu": {
+			"badges": [
+				"library"
+			]
+		}
+	}
+}
