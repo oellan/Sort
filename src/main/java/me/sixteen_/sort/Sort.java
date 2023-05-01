@@ -7,6 +7,7 @@ import me.sixteen_.sort.api.SortClientModInitializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenKeyboardEvents;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenMouseEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -37,14 +38,10 @@ public class Sort implements ISort, ClientModInitializer {
 
 		ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
 			if (isContainer(screen)) {
-				ScreenKeyboardEvents.afterKeyPress(screen).register((containerScreen, key, scancode, modifiers) -> {
-					if (key == config.getKeycode()) {
-						mc = client;
-						ScreenHandler container = ((ScreenHandlerProvider<?>) containerScreen).getScreenHandler();
-						this.container = container;
-						sort();
-					}
-				});
+				ScreenKeyboardEvents.afterKeyPress(screen).register(
+						(containerScreen, key, scancode, modifiers) -> screenKeyEvent(client, containerScreen, key));
+				ScreenMouseEvents.afterMouseClick(screen).register(
+						(containerScreen, mouseX, mouseY, button) -> screenKeyEvent(client, containerScreen, button));
 			}
 		});
 	}
@@ -57,6 +54,15 @@ public class Sort implements ISort, ClientModInitializer {
 	@Override
 	public void setOrder(IOrder order) {
 		this.order = order;
+	}
+
+	private void screenKeyEvent(MinecraftClient client, Screen containerScreen, int keycode) {
+		if (keycode == config.getKeycode()) {
+			mc = client;
+			ScreenHandler container = ((ScreenHandlerProvider<?>) containerScreen).getScreenHandler();
+			this.container = container;
+			sort();
+		}
 	}
 
 	private boolean isContainer(Screen screen) {
