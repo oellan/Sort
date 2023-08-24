@@ -75,6 +75,27 @@ public class Sort implements ISort, ClientModInitializer {
 	private void sort() {
 		Integer[] slots = getContainerSlots();
 		quicksort(slots, 0, slots.length - 1);
+
+		// hacky way to ensure multiple stacks get fused
+		for (int i = 0; i <= 20; i++) {
+			combine(getContainerSlots());
+		}
+
+		slots = getContainerSlots();
+		quicksort(slots, 0, slots.length - 1);
+	}
+
+	private void combine(Integer[] slots) {
+		System.out.println("\n\n\nCombining...\n\n\n");
+		for (int slot = slots.length - 1; slot > 0; slot--) {
+			System.out.println("slot: " + slot + ", ID: " + slots[slot]);
+			if (slots[slot - 1].equals(slots[slot])) {
+				System.out.println("clickt");
+				pickup(slot);
+				pickup(slot - 1);
+				pickup(slot);
+			}
+		}
 	}
 
 	private void quicksort(Integer[] slots, int left, int right) {
