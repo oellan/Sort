@@ -15,6 +15,8 @@ public interface IOrder {
 	 * @return order by item id
 	 */
 	static int defaultOrder(Slot slot) {
+		// since the list is sorted from low to high, the empty slot always
+		// gets assigned the highest possible value
 		return slot.getStack().isEmpty() ? Integer.MAX_VALUE : Item.getRawId(slot.getStack().getItem());
 	}
 }
